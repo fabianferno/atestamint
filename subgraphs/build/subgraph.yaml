@@ -1,0 +1,53 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: optimism-goerli
+    source:
+      address: "0xFdEdFc08cfa325fC2479dAf28Ae7e3A326EEC20C"
+      abi: Contract
+      startBlock: 13203340
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - DropCreated
+        - EditionCreated
+      abis:
+        - name: Contract
+          file: Contract\abis\Contract.json
+      eventHandlers:
+        - event: DropCreated(address,address,address,uint64,string)
+          handler: handleDropCreated
+        - event: EditionCreated(address,address,address,uint64,string)
+          handler: handleEditionCreated
+      file: Contract\Contract.wasm
+  - kind: ethereum
+    name: Vault
+    network: optimism-goerli
+    source:
+      address: "0xBfCda0baC2A7866D0a13DB211Fe6532F0fA2Cad4"
+      abi: Vault
+      startBlock: 13203546
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FundsUnlocked
+        - TestingData
+        - Voted
+      abis:
+        - name: Vault
+          file: Vault\abis\Vault.json
+      eventHandlers:
+        - event: FundsUnlocked(uint256,uint256,uint64)
+          handler: handleFundsUnlocked
+        - event: TestingData(address,uint256,string,bool,address,uint256,uint256,uint256[8])
+          handler: handleTestingData
+        - event: Voted(address,uint256,string,uint256,bool)
+          handler: handleVoted
+      file: Vault\Vault.wasm
